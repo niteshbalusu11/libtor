@@ -1,6 +1,9 @@
 [workspace]
-
 members = [
     "libtor",
     "libtor-derive",
 ]
+resolver = "2"
+[workspace.dependencies]
+libtor = { path = "./libtor" }
+libtor-derive = { path = "./libtor-derive" }

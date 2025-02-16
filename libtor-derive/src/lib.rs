@@ -105,7 +105,7 @@ fn generate_test(
         fn #test_name() {
             use Expand;
 
-            let v = #enum_name::#name#args_group;
+            let v = #enum_name::#name #args_group;  // Added space here
             println!("{:?} => {}", v, v.expand_cli());
             assert_eq!(v.expand_cli(), #expected);
         }
@@ -132,7 +132,7 @@ pub fn derive_helper_attr(input: proc_macro::TokenStream) -> proc_macro::TokenSt
                 let mut fmt_attr = None;
 
                 for attr in &variant.attrs {
-                    if attr.path.get_ident() != Some(&format_ident!("expand_to")) {
+                    if attr.path().get_ident() != Some(&format_ident!("expand_to")) {
                         continue;
                     }
 

@@ -9,14 +9,19 @@ documentation = "https://docs.rs/libtor/"
 description = "Bundle and run Tor inside your own project"
 keywords = ["tor", "daemon"]
 readme = "README.md"
+edition = "2021"
 
 [dependencies]
-libtor-sys = "^47.13"
-libtor-derive = "^0.1.2"
-log = "^0.4"
-serde = { version = "1.0.130", features = ["derive"], optional = true }
-rand = "0.8"
-sha1 = "0.6"
+libtor-sys = { git = "https://github.com/niteshbalusu11/libtor-sys", branch = "master" }
+libtor-derive = { path = "../libtor-derive" }
+log = "0.4"
+serde = { version = "1.0.217", features = ["derive"], optional = true }
+rand = "0.9"
+sha1 = "0.10.6"
+
+[lib]
+name = "libtor" 
+crate-type = ["cdylib", "rlib"]
 
 [features]
 vendored-openssl = ["libtor-sys/vendored-openssl"]

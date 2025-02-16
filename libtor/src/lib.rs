@@ -33,7 +33,8 @@ use serde::{Deserialize, Serialize};
 use std::ffi::CString;
 use std::thread::{self, JoinHandle};
 
-use rand::Rng;
+use rand::TryRngCore;
+use sha1::digest::Digest; // For Sha1 functionality // For basic RNG functionality
 
 #[allow(unused_imports)]
 use log_crate::{debug, error, info, trace};
@@ -54,16 +55,6 @@ use crate::utils::*;
 
 trait Expand: std::fmt::Debug {
     fn expand(&self) -> Vec<String>;
-
-    fn expand_cli(&self) -> String {
-        let mut parts = self.expand();
-        if parts.len() > 1 {
-            let args = parts.drain(1..).collect::<Vec<_>>().join(" ");
-            parts.push(format!("\"{}\"", args));
-        }
-
-        parts.join(" ")
-    }
 }
 
 /// Enum that represents the size unit both in bytes and bits
@@ -399,18 +390,21 @@ impl Tor {
 
 /// Generate a hashed password to use HashedControlPassword
 pub fn generate_hashed_password(secret: &str) -> String {
-    // This code is rewrite of
-    // https://gist.github.com/s4w3d0ff/9d65ec5866d78842547183601b2fa4d5
-    // s4w3d0ff and jamesacampbell, Thank you!
-
     let c: usize = 96;
     const EXPBIAS: usize = 6;
     let mut count = (16_usize + (c & 15_usize)) << ((c >> 4_usize) + EXPBIAS);
+
+    // Create a new Sha1 hasher using the Digest trait
     let mut d = sha1::Sha1::new();
 
     let slen = 8 + (secret.as_bytes().len());
     let mut tmp = Vec::with_capacity(slen);
-    tmp.extend_from_slice(&rand::rngs::OsRng.gen::<u64>().to_ne_bytes());
+
+    // Create an instance of OsRng and use it to generate random bytes
+    let mut random_bytes = [0u8; 8];
+    let mut rng = rand::rngs::OsRng;
+    rng.try_fill_bytes(&mut random_bytes).unwrap();
+    tmp.extend_from_slice(&random_bytes);
     tmp.extend_from_slice(secret.as_bytes());
 
     while count != 0 {
@@ -422,13 +416,14 @@ pub fn generate_hashed_password(secret: &str) -> String {
             break;
         }
     }
-    let hashed = d.digest().to_string();
+
+    let hashed = d.finalize();
     let tmp = tmp[..8]
         .iter()
         .map(|n| format!("{:02x}", n))
         .collect::<String>();
 
-    format!("16:{}{:02x}{}", tmp, c as u8, hashed)
+    format!("16:{}{:02x}{:x}", tmp, c as u8, hashed)
 }
 
 #[cfg(test)]

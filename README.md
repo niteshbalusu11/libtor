@@ -24,22 +24,30 @@ Since Tor uses internally some static variables to keep its state, keep in mind 
 
 ## Supported platforms
 
-The currently supported platforms are:
-
 * Linux (tested on Fedora 30 and Ubuntu Xenial)
-* Android through the NDK
+* Android through the NDK (API level 30+)
 * MacOS
 * iOS
-* Windows cross-compiled from Linux with `mingw`
 
-Coming Soon :tm::
+### Build using nix on a Mac
+- Install [nix](https://determinate.systems/nix-installer/)
+- Install [direnv](https://direnv.net/)
+- Run `direnv allow` to allow direnv to load the nix environment
+- If you want to install xcode and xcode command line tools, simply run `setup-ios-env`.
 
-* Windows (natively built)
+### Note 
+- One retarded thing is that, rust adds a prefix `lib` to the library name, so the final library name is `liblibtor.dylib` and `liblibtor.so`.
 
-## Dependencies
+```
+# Build Android
+build-android
 
-The following dependencies are needed:
-- `openssl`
-- `pkg-config`
-- `file`
-- the "usual" C build tools: a compiler, `automake`, `autoconf`
+# Build iOS
+build-ios
+
+# Build MacOS
+build-macos
+
+# Build all
+build-all
+```
