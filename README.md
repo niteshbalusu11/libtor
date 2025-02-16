@@ -35,9 +35,6 @@ Since Tor uses internally some static variables to keep its state, keep in mind 
 - Run `direnv allow` to allow direnv to load the nix environment
 - If you want to install xcode and xcode command line tools, simply run `setup-ios-env`.
 
-### Note 
-- One retarded thing is that, rust adds a prefix `lib` to the library name, so the final library name is `liblibtor.dylib` and `liblibtor.so`.
-
 ```
 # Build Android
 build-android
