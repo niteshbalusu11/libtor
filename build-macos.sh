@@ -47,4 +47,18 @@ else
     echo "Warning: Could not create universal binary. One or both architecture builds are missing."
 fi
 
+# Create universal static binary (optional)
+echo "Creating universal static binary..."
+if [ -f "target/macos/aarch64-apple-darwin/release/libtor.a" ] && \
+   [ -f "target/macos/x86_64-apple-darwin/release/libtor.a" ]; then
+    mkdir -p target/macos/universal
+    lipo -create \
+        target/macos/aarch64-apple-darwin/release/libtor.a \
+        target/macos/x86_64-apple-darwin/release/libtor.a \
+        -output target/macos/universal/libtor.a
+    echo "Universal static library created at target/macos/universal/libtor.a"
+else
+    echo "Warning: Could not create universal static library. One or both architecture builds are missing."
+fi
+
 echo "macOS build complete!"

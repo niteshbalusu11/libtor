@@ -21,7 +21,7 @@ sha1 = "0.10.6"
 
 [lib]
 name = "libtor" 
-crate-type = ["cdylib", "rlib"]
+crate-type = ["cdylib", "rlib", "staticlib"]
 
 [features]
 vendored-openssl = ["libtor-sys/vendored-openssl"]
