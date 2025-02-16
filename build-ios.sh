@@ -40,14 +40,14 @@ cargo build --release \
 
 # Create universal binary (optional)
 echo "Creating universal binary..."
-if [ -f "target/ios/aarch64-apple-ios/release/liblibtor.dylib" ] && \
-   [ -f "target/ios/x86_64-apple-ios/release/liblibtor.dylib" ]; then
+if [ -f "target/ios/aarch64-apple-ios/release/libtor.dylib" ] && \
+   [ -f "target/ios/x86_64-apple-ios/release/libtor.dylib" ]; then
     mkdir -p target/ios/universal
     lipo -create \
-        target/ios/aarch64-apple-ios/release/liblibtor.dylib \
-        target/ios/x86_64-apple-ios/release/liblibtor.dylib \
-        -output target/ios/universal/liblibtor.dylib
-    echo "Universal binary created at target/ios/universal/liblibtor.dylib"
+        target/ios/aarch64-apple-ios/release/libtor.dylib \
+        target/ios/x86_64-apple-ios/release/libtor.dylib \
+        -output target/ios/universal/libtor.dylib
+    echo "Universal binary created at target/ios/universal/libtor.dylib"
 else
     echo "Warning: Could not create universal binary. One or both architecture builds are missing."
 fi
