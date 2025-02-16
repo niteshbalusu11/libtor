@@ -20,7 +20,7 @@ rand = "0.9"
 sha1 = "0.10.6"
 
 [lib]
-name = "tor" 
+name = "libtor" 
 crate-type = ["cdylib", "rlib"]
 
 [features]
