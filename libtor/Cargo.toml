@@ -19,10 +19,6 @@ serde = { version = "1.0.217", features = ["derive"], optional = true }
 rand = "0.9"
 sha1 = "0.10.6"
 
-[lib]
-name = "libtor" 
-crate-type = ["cdylib", "rlib", "staticlib"]
-
 [features]
 vendored-openssl = ["libtor-sys/vendored-openssl"]
 vendored-lzma = ["libtor-sys/vendored-lzma"]
